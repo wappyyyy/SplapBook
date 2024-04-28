@@ -1,36 +1,36 @@
 <template>
   <form @submit.prevent="onSubmit" class="space-y-4">
     <div>
-      <label for="title" class="block text-sm font-medium text-gray-700"
-        >タイトル</label
-      >
+      <label for="title" class="block text-sm font-medium text-gray-700">
+        タイトル
+      </label>
       <input
         type="text"
         id="title"
-        v-model="form.title"
+        v-model="inputData.title"
         required
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       />
     </div>
     <div>
-      <label for="code" class="block text-sm font-medium text-gray-700"
-        >コード</label
-      >
+      <label for="code" class="block text-sm font-medium text-gray-700">
+        コード
+      </label>
       <input
         type="text"
         id="code"
-        v-model="form.code"
+        v-model="inputData.memoryCode"
         required
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       />
     </div>
     <div>
-      <label for="description" class="block text-sm font-medium text-gray-700"
-        >説明</label
-      >
+      <label for="description" class="block text-sm font-medium text-gray-700">
+        説明
+      </label>
       <textarea
         id="description"
-        v-model="form.description"
+        v-model="inputData.description"
         required
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       ></textarea>
@@ -45,15 +45,24 @@
 </template>
 
 <script setup>
+// TODO: indexでInsertする
 import { ref } from "vue";
 
-const form = ref({
+const supabase = useSupabaseClient();
+
+const inputData = ref({
   title: "",
-  code: "",
+  memoryCode: "",
   description: "",
 });
 
-const onSubmit = () => {
-  console.log(form.value);
+const onSubmit = async () => {
+  const { error } = await supabase.from("entries").insert({
+    title: inputData.value.title,
+    memory_code: inputData.value.memoryCode,
+    description: inputData.value.description,
+  });
+
+  inputData.value = { title: "", memoryCode: "", description: "" };
 };
 </script>
