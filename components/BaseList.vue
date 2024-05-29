@@ -15,6 +15,12 @@
         <h3 class="text-xl font-bold">ID:{{ item.id }} {{ item.title }}</h3>
         <p class="mt-2 text-gray-700">{{ item.memory_code }}</p>
         <p class="mt-2 text-gray-700">{{ item.description }}</p>
+        <NuxtLink
+          :to="'/entries/' + item.id"
+          class="text-blue-500 hover:underline mt-2 block"
+        >
+          詳細ページへ
+        </NuxtLink>
       </div>
       <div>
         <button @click="onDeleteItem(item.id)">
@@ -27,7 +33,7 @@
 
 <script setup lang="ts">
 // TODO: indexでfetchする
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 const supabase = useSupabaseClient();
 
 const items = ref([]);
