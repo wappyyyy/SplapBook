@@ -33,10 +33,18 @@
 
 <script setup lang="ts">
 // TODO: indexでfetchする
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+
+interface Post {
+  id:number
+  title: string
+  memory_code: string
+  description: string
+}
+
 const supabase = useSupabaseClient();
 
-const items = ref([]);
+const items = ref<Post[]>([]);
 
 const fetchData = async () => {
   console.log("fetch data");
