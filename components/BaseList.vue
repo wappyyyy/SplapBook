@@ -13,7 +13,26 @@
     >
       <div>
         <h3 class="text-xl font-bold">ID:{{ item.id }} {{ item.title }}</h3>
-        <p class="mt-2 text-gray-700">{{ item.memory_code }}</p>
+        <div class="flex items-center mt-2">
+          <p class="text-gray-700">{{ item.memory_code }}</p>
+          <button
+            @click="copyToClipboard(item.memory_code)"
+            class="ml-2 relative"
+          >
+            <Icon
+              class="text-gray-500"
+              name="ic:baseline-content-copy"
+              size="1.2em"
+            />
+            <p
+              v-if="tooltipVisible"
+              :id="`tip-${item.id}`"
+              class="absolute whitespace-nowrap top-0 left-0 mt-8 ml-2 px-2 py-1 text-xs text-white bg-black rounded"
+            >
+              コピーしました
+            </p>
+          </button>
+        </div>
         <p class="mt-2 text-gray-700">{{ item.description }}</p>
         <NuxtLink
           :to="'/entries/' + item.id"
@@ -32,19 +51,19 @@
 </template>
 
 <script setup lang="ts">
-// TODO: indexでfetchする
 import { ref } from "vue";
 
 interface Post {
-  id:number
-  title: string
-  memory_code: string
-  description: string
+  id: number;
+  title: string;
+  memory_code: string;
+  description: string;
 }
 
 const supabase = useSupabaseClient();
 
 const items = ref<Post[]>([]);
+const tooltipVisible = ref(false);
 
 const fetchData = async () => {
   console.log("fetch data");
@@ -64,6 +83,21 @@ const onDeleteItem = async (id: number) => {
     return;
   }
   fetchData();
+};
+
+const copyToClipboard = (text: string) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      console.log("Copied to clipboard:", text);
+      tooltipVisible.value = true;
+      setTimeout(() => {
+        tooltipVisible.value = false;
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text:", err);
+    });
 };
 
 onMounted(() => fetchData());
