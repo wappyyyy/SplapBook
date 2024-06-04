@@ -12,6 +12,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@headlessui/vue": "latest",
     "@nuxtjs/supabase": "latest",
     "nuxt": "^3.11.2",
     "nuxt-icon": "^0.6.10",

@@ -7,8 +7,8 @@
       一覧取得
     </button>
     <div
-      v-for="item in items"
-      :key="item.id"
+      v-for="(item, idx) in items"
+      :key="idx"
       class="my-5 p-4 shadow-lg rounded-lg bg-gray-100 flex justify-between"
     >
       <div>
@@ -16,7 +16,7 @@
         <div class="flex items-center mt-2">
           <p class="text-gray-700">{{ item.memory_code }}</p>
           <button
-            @click="copyToClipboard(item.memory_code)"
+            @click="copyToClipboard(idx, item.memory_code)"
             class="ml-2 relative"
           >
             <Icon
@@ -24,13 +24,12 @@
               name="ic:baseline-content-copy"
               size="1.2em"
             />
-            <p
-              v-if="tooltipVisible"
-              :id="`tip-${item.id}`"
+            <span
+              v-if="isShowTooltip(idx)"
               class="absolute whitespace-nowrap top-0 left-0 mt-8 ml-2 px-2 py-1 text-xs text-white bg-black rounded"
             >
               コピーしました
-            </p>
+            </span>
           </button>
         </div>
         <p class="mt-2 text-gray-700">{{ item.description }}</p>
@@ -63,7 +62,7 @@ interface Post {
 const supabase = useSupabaseClient();
 
 const items = ref<Post[]>([]);
-const tooltipVisible = ref(false);
+const activeIndex = ref<number | null>(null);
 
 const fetchData = async () => {
   console.log("fetch data");
@@ -85,14 +84,18 @@ const onDeleteItem = async (id: number) => {
   fetchData();
 };
 
-const copyToClipboard = (text: string) => {
+const isShowTooltip = (idx: number) => {
+  return idx === activeIndex.value;
+};
+
+const copyToClipboard = (idx: number, text: string) => {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      console.log("Copied to clipboard:", text);
-      tooltipVisible.value = true;
+      activeIndex.value = idx;
+
       setTimeout(() => {
-        tooltipVisible.value = false;
+        activeIndex.value = null;
       }, 2000);
     })
     .catch((err) => {
