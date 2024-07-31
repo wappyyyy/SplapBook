@@ -25,6 +25,62 @@
       />
     </div>
     <div>
+      <label class="block text-sm font-medium text-gray-700">ルール</label>
+      <ul class="flex">
+        <li>
+          <label class="ml-2 text-sm font-medium text-gray-700">
+            <input
+              type="radio"
+              v-model="inputData.rule"
+              :value="RuleTypes.NAWABARI"
+            />
+            ナワバリ
+          </label>
+        </li>
+        <li>
+          <label class="ml-2 text-sm font-medium text-gray-700">
+            <input
+              type="radio"
+              v-model="inputData.rule"
+              :value="RuleTypes.AREA"
+            />
+            ガチエリア
+          </label>
+        </li>
+        <li>
+          <label for="territory" class="ml-2 text-sm font-medium text-gray-700">
+            <input
+              type="radio"
+              id="territory"
+              v-model="inputData.rule"
+              :value="RuleTypes.YAGURA"
+            />
+            ガチヤグラ
+          </label>
+        </li>
+        <li>
+          <label class="ml-2 text-sm font-medium text-gray-700">
+            <input
+              type="radio"
+              v-model="inputData.rule"
+              :value="RuleTypes.HOKO"
+            />
+            ガチホコ
+          </label>
+        </li>
+        <li>
+          <label class="ml-2 text-sm font-medium text-gray-700">
+            <input
+              type="radio"
+              v-model="inputData.rule"
+              :value="RuleTypes.ASARI"
+            />
+            ガチアサリ
+          </label>
+        </li>
+      </ul>
+    </div>
+    <div>
       <label for="description" class="block text-sm font-medium text-gray-700">
         説明
       </label>
@@ -48,12 +104,21 @@
 // TODO: indexでInsertする
 import { ref } from "vue";
 
+const RuleTypes = {
+  NAWABARI: 0,
+  AREA: 1,
+  YAGURA: 2,
+  HOKO: 3,
+  ASARI: 4,
+};
+
 const supabase = useSupabaseClient();
 
 const inputData = ref({
   title: "",
   memoryCode: "",
   description: "",
+  rule: RuleTypes.NAWABARI,
 });
 
 const onSubmit = async () => {
