@@ -81,6 +81,27 @@
       </ul>
     </div>
     <div>
+      <label for="team" class="block text-sm font-medium text-gray-700">
+        ブキ
+      </label>
+      <select
+        v-model="inputData.wepon"
+        required
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      >
+        <option disabled value="">ブキを選択してください</option>
+        <optgroup label="シューター">
+          <option value="1">スプラシューター</option>
+        </optgroup>
+        <optgroup label="ローラー">
+          <option value="2">スプラローラー</option>
+        </optgroup>
+        <optgroup label="チャージャー">
+          <option value="3">スプラチャージャー</option>
+        </optgroup>
+      </select>
+    </div>
+    <div>
       <label for="description" class="block text-sm font-medium text-gray-700">
         説明
       </label>
@@ -103,14 +124,7 @@
 <script setup>
 // TODO: indexでInsertする
 import { ref } from "vue";
-
-const RuleTypes = {
-  NAWABARI: 0,
-  AREA: 1,
-  YAGURA: 2,
-  HOKO: 3,
-  ASARI: 4,
-};
+import { RuleTypes } from "~/consts/const.ts";
 
 const supabase = useSupabaseClient();
 
@@ -119,6 +133,7 @@ const inputData = ref({
   memoryCode: "",
   description: "",
   rule: RuleTypes.NAWABARI,
+  wepon: "1",
 });
 
 const onSubmit = async () => {
