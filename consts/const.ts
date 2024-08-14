@@ -106,3 +106,25 @@ export const StageList: Stage[] = [
   { id: 1, name: "ユノハナ" },
   { id: 2, name: "キンメダイ" },
 ];
+
+export const Udemae = {
+  X: 0,
+  SPLUS: 1,
+  S: 2,
+  A: 3,
+  B: 4,
+  C: 5,
+} as const satisfies {
+  [key: string]: number;
+};
+
+export const UdemaeList = {
+  [Udemae.X]: "X",
+  [Udemae.SPLUS]: "S+",
+  [Udemae.S]: "S",
+  [Udemae.A]: "A",
+  [Udemae.B]: "B",
+  [Udemae.C]: "C",
+} as const satisfies {
+  [key: number]: string;
+};
