@@ -1,4 +1,4 @@
-import type { WeponType, WeponListItem, Stage } from "~/types/type";
+import type { WeponType, WeponListItem, Stage, UdemaeType } from "~/types/type";
 
 export const RuleTypes = {
   NAWABARI: 0,
@@ -107,24 +107,11 @@ export const StageList: Stage[] = [
   { id: 2, name: "キンメダイ" },
 ];
 
-export const Udemae = {
-  X: 0,
-  SPLUS: 1,
-  S: 2,
-  A: 3,
-  B: 4,
-  C: 5,
-} as const satisfies {
-  [key: string]: number;
-};
-
-export const UdemaeList = {
-  [Udemae.X]: "X",
-  [Udemae.SPLUS]: "S+",
-  [Udemae.S]: "S",
-  [Udemae.A]: "A",
-  [Udemae.B]: "B",
-  [Udemae.C]: "C",
-} as const satisfies {
-  [key: number]: string;
-};
+export const UdemaeList = [
+  "X",
+  "S+",
+  "S",
+  "A",
+  "B",
+  "C",
+] as const satisfies UdemaeType[];

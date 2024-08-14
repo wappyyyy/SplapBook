@@ -142,19 +142,20 @@
         class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
       >
         <option disabled value="">ウデマエを選択してください</option>
-        <option v-for="(name, value) in UdemaeList" :key="name" :value="value">
+        <option v-for="name in UdemaeList" :key="name" :value="name">
           {{ name }}
         </option>
       </select>
 
-      <div v-if="selectedUdemae == Udemae.X">
+      <div v-if="selectedUdemae === 'X'">
         <label for="xPower" class="block text-sm font-medium text-gray-700">
           Xパワー
         </label>
         <input
           id="xPower"
-          v-model="inputData.xPower"
-          type="number"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
           required
           class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
         />
@@ -190,9 +191,9 @@ import {
   WeaponTypesList,
   WeaponListByType,
   StageList,
-  Udemae,
   UdemaeList,
 } from "~/consts/const";
+import type { UdemaeType } from "~/types/type";
 
 const supabase = useSupabaseClient();
 
@@ -204,7 +205,7 @@ const inputData = ref({
   weapon: null,
 });
 const weaponType = ref<number | null>(null);
-const selectedUdemae = ref<number | null>(null);
+const selectedUdemae = ref<UdemaeType | null>(null);
 
 const filteredWeapons = computed(() => {
   return weaponType.value

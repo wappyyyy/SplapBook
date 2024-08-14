@@ -18,3 +18,5 @@ export type Stage = {
   id: number;
   name: string;
 };
+
+export type UdemaeType = "X" | "S+" | "S" | "A" | "B" | "C";
