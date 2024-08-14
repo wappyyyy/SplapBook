@@ -4,6 +4,11 @@ export type Wepon = {
   type: WeponType;
 };
 
+export type WeponListItem = {
+  id: number;
+  name: string;
+};
+
 export type WeponType = {
   id: number;
   name: string;

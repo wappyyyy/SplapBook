@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
-    "@nuxtjs/storybook",
+    // "@nuxtjs/storybook",
     "@nuxtjs/supabase",
     "nuxt-icon",
   ],
@@ -11,6 +11,13 @@ export default defineNuxtConfig({
     public: {
       supabaseUrl: "",
       supabaseKey: "",
+    },
+  },
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+      },
     },
   },
   supabase: {

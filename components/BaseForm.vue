@@ -85,20 +85,28 @@
         ブキ
       </label>
       <select
-        v-model="inputData.wepon"
+        v-model="weaponType"
         required
-        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
       >
-        <option disabled value="">ブキを選択してください</option>
-        <optgroup label="シューター">
-          <option value="1">スプラシューター</option>
-        </optgroup>
-        <optgroup label="ローラー">
-          <option value="2">スプラローラー</option>
-        </optgroup>
-        <optgroup label="チャージャー">
-          <option value="3">スプラチャージャー</option>
-        </optgroup>
+        <option disabled value="">ブキタイプを選択してください</option>
+        <option v-for="(wt, key) in WeaponTypesList" :key="key" :value="key">
+          {{ wt }}
+        </option>
+      </select>
+      <select
+        v-model="inputData.weapon"
+        required
+        class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      >
+        <option disabled value="">武器を選択してください</option>
+        <option
+          v-for="weapon in filteredWeapons"
+          :key="weapon.id"
+          :value="weapon.id"
+        >
+          {{ weapon.name }}
+        </option>
       </select>
     </div>
     <div>
@@ -121,10 +129,15 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // TODO: indexでInsertする
-import { ref } from "vue";
-import { RuleTypes } from "~/consts/const.ts";
+import { ref, computed } from "vue";
+import {
+  RuleTypes,
+  WeaponTypes,
+  WeaponTypesList,
+  WeaponListByType,
+} from "~/consts/const";
 
 const supabase = useSupabaseClient();
 
@@ -133,16 +146,31 @@ const inputData = ref({
   memoryCode: "",
   description: "",
   rule: RuleTypes.NAWABARI,
-  wepon: "1",
+  weapon: null,
+});
+const weaponType = ref<number | null>(null);
+
+const filteredWeapons = computed(() => {
+  return weaponType.value
+    ? WeaponListByType[weaponType.value]
+    : WeaponListByType[WeaponTypes.SHOOTER];
 });
 
 const onSubmit = async () => {
-  const { error } = await supabase.from("entries").insert({
-    title: inputData.value.title,
-    memory_code: inputData.value.memoryCode,
-    description: inputData.value.description,
-  });
+  const { error } = await supabase.from("entries").insert([
+    {
+      title: inputData.value.title,
+      memory_code: inputData.value.memoryCode,
+      description: inputData.value.description,
+    },
+  ]);
 
-  inputData.value = { title: "", memoryCode: "", description: "" };
+  inputData.value = {
+    title: "",
+    memoryCode: "",
+    description: "",
+    rule: RuleTypes.NAWABARI,
+    weapon: null,
+  };
 };
 </script>
