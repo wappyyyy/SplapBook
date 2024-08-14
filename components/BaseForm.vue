@@ -24,6 +24,8 @@
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
       />
     </div>
+
+    <!-- ルール選択 -->
     <div>
       <label class="block text-sm font-medium text-gray-700">ルール</label>
       <ul class="flex">
@@ -80,11 +82,14 @@
         </li>
       </ul>
     </div>
+
+    <!-- ブキ選択 -->
     <div>
-      <label for="team" class="block text-sm font-medium text-gray-700">
+      <label for="wepon" class="block text-sm font-medium text-gray-700">
         ブキ
       </label>
       <select
+        id="wepon"
         v-model="weaponType"
         required
         class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
@@ -109,6 +114,22 @@
         </option>
       </select>
     </div>
+
+    <!-- ステージ選択 -->
+    <div>
+      <label for="stage" class="block text-sm font-medium text-gray-700">
+        ステージ
+      </label>
+      <select
+        class="mt-1 block pl-3 pr-10 py-2 text-base border-2 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+      >
+        <option disabled value="">ステージを選択してください</option>
+        <option v-for="stage in StageList" :key="stage.id" :value="stage.id">
+          {{ stage.name }}
+        </option>
+      </select>
+    </div>
+
     <div>
       <label for="description" class="block text-sm font-medium text-gray-700">
         説明
@@ -137,6 +158,7 @@ import {
   WeaponTypes,
   WeaponTypesList,
   WeaponListByType,
+  StageList,
 } from "~/consts/const";
 
 const supabase = useSupabaseClient();

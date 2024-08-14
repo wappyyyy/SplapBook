@@ -1,4 +1,4 @@
-import type { WeponType, WeponListItem } from "~/types/type";
+import type { WeponType, WeponListItem, Stage } from "~/types/type";
 
 export const RuleTypes = {
   NAWABARI: 0,
@@ -100,3 +100,9 @@ export const WeaponListByType: { [key: number]: WeponListItem[] } = {
     // 他のワイパー系武器
   ],
 };
+
+// TODO: DBからとる
+export const StageList: Stage[] = [
+  { id: 1, name: "ユノハナ" },
+  { id: 2, name: "キンメダイ" },
+];

@@ -13,3 +13,8 @@ export type WeponType = {
   id: number;
   name: string;
 };
+
+export type Stage = {
+  id: number;
+  name: string;
+};
