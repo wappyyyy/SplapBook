@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700 hover:border-purple-500 transition-all duration-300 transform hover:scale-105">
+  <BaseCard variant="gradient" :hoverable="true">
     <!-- Team Header -->
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-xl font-bold text-white truncate">
@@ -53,11 +53,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </BaseCard>
 </template>
 
 <script setup lang="ts">
 import type { Team } from '~/types/team'
+import BaseCard from '~/components/base/BaseCard.vue'
 
 interface Props {
   team: Team

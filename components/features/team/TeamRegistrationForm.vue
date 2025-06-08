@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-700">
+  <BaseCard>
     <h2 class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-6">
       🦑 チーム登録
     </h2>
@@ -10,18 +10,14 @@
         <label for="teamName" class="block text-sm font-semibold text-gray-300 mb-2">
           チーム名 <span class="text-red-400">*</span>
         </label>
-        <input
+        <BaseInput
           id="teamName"
           v-model="formData.name"
           type="text"
-          :class="[
-            'w-full px-4 py-3 rounded-lg bg-gray-700 border-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-colors',
-            errors.name ? 'border-red-500' : 'border-gray-600'
-          ]"
           placeholder="チーム名を入力してください"
-          maxlength="50"
+          :maxlength="50"
+          :error="errors.name"
         />
-        <p v-if="errors.name" class="text-red-400 text-sm mt-1">{{ errors.name }}</p>
       </div>
 
       <!-- Team Members -->
@@ -43,40 +39,30 @@
                 <label :for="`playerName${index}`" class="block text-sm font-medium text-gray-300 mb-1">
                   プレイヤー名 <span class="text-red-400">*</span>
                 </label>
-                <input
+                <BaseInput
                   :id="`playerName${index}`"
                   v-model="member.playerName"
                   type="text"
-                  :class="[
-                    'w-full px-3 py-2 rounded bg-gray-600 border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors',
-                    errors[`member${index}Name`] ? 'border-red-500' : 'border-gray-500'
-                  ]"
                   placeholder="プレイヤー名"
-                  maxlength="20"
+                  :maxlength="20"
+                  :error="errors[`member${index}Name`]"
+                  size="sm"
                 />
-                <p v-if="errors[`member${index}Name`]" class="text-red-400 text-xs mt-1">
-                  {{ errors[`member${index}Name`] }}
-                </p>
               </div>
               <div>
                 <label :for="`xpScore${index}`" class="block text-sm font-medium text-gray-300 mb-1">
                   XP値 <span class="text-red-400">*</span>
                 </label>
-                <input
+                <BaseInput
                   :id="`xpScore${index}`"
-                  v-model.number="member.xpScore"
+                  v-model="member.xpScore"
                   type="number"
-                  min="1500"
-                  max="4000"
-                  :class="[
-                    'w-full px-3 py-2 rounded bg-gray-600 border text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors',
-                    errors[`member${index}Xp`] ? 'border-red-500' : 'border-gray-500'
-                  ]"
+                  :min="1500"
+                  :max="4000"
                   placeholder="1500-4000"
+                  :error="errors[`member${index}Xp`]"
+                  size="sm"
                 />
-                <p v-if="errors[`member${index}Xp`]" class="text-red-400 text-xs mt-1">
-                  {{ errors[`member${index}Xp`] }}
-                </p>
               </div>
             </div>
           </div>
@@ -93,35 +79,45 @@
 
       <!-- Submit Button -->
       <div class="flex justify-center">
-        <button
+        <BaseButton
           type="submit"
-          :disabled="loading || !isFormValid"
-          class="px-8 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white font-bold rounded-lg hover:from-pink-600 hover:to-orange-500 focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+          :disabled="!isFormValid"
+          :loading="loading"
+          loading-text="登録中..."
+          variant="primary"
+          @click="handleSubmit"
         >
-          <span v-if="loading" class="flex items-center">
-            <Icon name="eos-icons:loading" class="mr-2" />
-            登録中...
-          </span>
-          <span v-else>🎯 チーム登録</span>
-        </button>
+          🎯 チーム登録
+        </BaseButton>
       </div>
 
       <!-- Success Message -->
-      <div v-if="successMessage" class="bg-green-900 border border-green-500 rounded-lg p-4">
-        <p class="text-green-200 text-center font-semibold">{{ successMessage }}</p>
-      </div>
+      <BaseMessage
+        v-if="successMessage"
+        type="success"
+        :message="successMessage"
+        :auto-hide="true"
+        @dismiss="successMessage = ''"
+      />
 
       <!-- Error Message -->
-      <div v-if="error" class="bg-red-900 border border-red-500 rounded-lg p-4">
-        <p class="text-red-200 text-center">{{ error }}</p>
-      </div>
+      <BaseMessage
+        v-if="error"
+        type="error"
+        :message="error"
+        dismissible
+      />
     </form>
-  </div>
+  </BaseCard>
 </template>
 
 <script setup lang="ts">
 import type { TeamRegistrationInput } from '~/types/team'
 import { validationRules } from '~/types/team'
+import BaseCard from '~/components/base/BaseCard.vue'
+import BaseInput from '~/components/base/BaseInput.vue'
+import BaseButton from '~/components/base/BaseButton.vue'
+import BaseMessage from '~/components/base/BaseMessage.vue'
 
 const emit = defineEmits<{
   teamCreated: [team: any]

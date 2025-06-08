@@ -19,12 +19,12 @@
     </div>
 
     <!-- Error State -->
-    <div v-else-if="error" class="bg-red-900 border border-red-500 rounded-2xl p-6">
-      <div class="text-center">
-        <Icon name="material-symbols:error" class="text-4xl text-red-400 mb-4" />
-        <p class="text-red-200 font-semibold">{{ error }}</p>
-      </div>
-    </div>
+    <BaseMessage
+      v-else-if="error"
+      type="error"
+      :message="error"
+      dismissible
+    />
 
     <!-- Empty State -->
     <div v-else-if="teams.length === 0 && !loading && !error" class="bg-gray-800 border border-gray-700 rounded-2xl p-8">
@@ -79,6 +79,7 @@
 <script setup lang="ts">
 import type { Team } from '~/types/team'
 import TeamCard from './TeamCard.vue'
+import BaseMessage from '~/components/base/BaseMessage.vue'
 
 interface Props {
   teams: readonly Team[]

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-700">
+  <BaseCard>
     <h2 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-6">
       🔍 チーム検索
     </h2>
@@ -11,38 +11,32 @@
           <label for="minXp" class="block text-sm font-semibold text-gray-300 mb-2">
             XP下限値 <span class="text-red-400">*</span>
           </label>
-          <input
+          <BaseInput
             id="minXp"
-            v-model.number="searchFilters.minXp"
+            v-model="searchFilters.minXp"
             type="number"
-            min="1500"
-            max="4000"
-            :class="[
-              'w-full px-4 py-3 rounded-lg bg-gray-700 border-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors',
-              errors.minXp ? 'border-red-500' : 'border-gray-600'
-            ]"
+            :min="1500"
+            :max="4000"
             placeholder="1500"
+            :error="errors.minXp"
+            size="lg"
           />
-          <p v-if="errors.minXp" class="text-red-400 text-sm mt-1">{{ errors.minXp }}</p>
         </div>
         
         <div>
           <label for="maxXp" class="block text-sm font-semibold text-gray-300 mb-2">
             XP上限値 <span class="text-red-400">*</span>
           </label>
-          <input
+          <BaseInput
             id="maxXp"
-            v-model.number="searchFilters.maxXp"
+            v-model="searchFilters.maxXp"
             type="number"
-            min="1500"
-            max="4000"
-            :class="[
-              'w-full px-4 py-3 rounded-lg bg-gray-700 border-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors',
-              errors.maxXp ? 'border-red-500' : 'border-gray-600'
-            ]"
+            :min="1500"
+            :max="4000"
             placeholder="4000"
+            :error="errors.maxXp"
+            size="lg"
           />
-          <p v-if="errors.maxXp" class="text-red-400 text-sm mt-1">{{ errors.maxXp }}</p>
         </div>
       </div>
 
@@ -57,38 +51,45 @@
 
       <!-- Search Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <button
+        <BaseButton
           type="submit"
-          :disabled="loading || !isValidRange"
-          class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold rounded-lg hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+          :disabled="!isValidRange"
+          :loading="loading"
+          loading-text="検索中..."
+          variant="secondary"
+          @click="handleSearch"
         >
-          <span v-if="loading" class="flex items-center justify-center">
-            <Icon name="eos-icons:loading" class="mr-2" />
-            検索中...
-          </span>
-          <span v-else>🎯 検索実行</span>
-        </button>
+          🎯 検索実行
+        </BaseButton>
         
-        <button
+        <BaseButton
           type="button"
-          @click="handleClear"
           :disabled="loading"
-          class="px-8 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-bold rounded-lg hover:from-gray-700 hover:to-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+          variant="secondary"
+          class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 focus:ring-gray-500"
+          @click="handleClear"
         >
           🗑️ クリア
-        </button>
+        </BaseButton>
       </div>
 
       <!-- Error Message -->
-      <div v-if="error" class="bg-red-900 border border-red-500 rounded-lg p-4">
-        <p class="text-red-200 text-center">{{ error }}</p>
-      </div>
+      <BaseMessage
+        v-if="error"
+        type="error"
+        :message="error"
+        dismissible
+      />
     </form>
-  </div>
+  </BaseCard>
 </template>
 
 <script setup lang="ts">
 import type { TeamSearchFilters } from '~/types/team'
+import BaseCard from '~/components/base/BaseCard.vue'
+import BaseInput from '~/components/base/BaseInput.vue'
+import BaseButton from '~/components/base/BaseButton.vue'
+import BaseMessage from '~/components/base/BaseMessage.vue'
 
 const emit = defineEmits<{
   search: [filters: TeamSearchFilters]
