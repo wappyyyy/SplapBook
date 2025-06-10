@@ -8,6 +8,13 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_ANON_KEY,
     },
   },
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+      },
+    },
+  },
   supabase: {
     redirectOptions: {
       login: "/",

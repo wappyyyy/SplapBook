@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@headlessui/vue": "latest",
     "@nuxtjs/supabase": "latest",
     "nuxt": "^3.17.5",
     "nuxt-icon": "^0.6.10",
