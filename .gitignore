@@ -25,3 +25,6 @@ logs
 
 # Storybook outputs
 .storybook
+
+# VS Code workspace settings
+.vscode
